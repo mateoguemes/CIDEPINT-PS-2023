@@ -1,0 +1,20 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block head %}
+        <link rel="stylesheet" href="{{url_for('static',filename='error.css')}}">
+        {% endblock %}
+        <title>Error!</title>
+    </head>
+
+    <body>
+        {% block body %}
+        <h1>Ha ocurrido un error "{{ error_name }}"</h1>
+        <p class="zoom-area">Descripción: <b>{{ error_description }}</b></p>
+        <div class="button-container">
+            <a href="{{url_for('home')}}" class="button">Volver al inicio</a>
+        </div>
+        {% endblock %}
+    </body>
+</html>

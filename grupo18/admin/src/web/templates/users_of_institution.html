@@ -1,0 +1,106 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<h1>{% block heading %} Usuarios de la institución "{{ institution.name }}" {% endblock %}</h1>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class="flash-messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
+{% if "user_institution_create" in permissions %}
+<div id="add_user">
+<h3>Agregar a un usuario</h3>
+    <form action="/users_of_institution/create" method="POST">
+        <label for="email">Ingrese el email:</label>
+        <input type="email" name="email">
+        <select name="role">
+            {% for role in institution_roles %}
+                <option value="{{role.id}}">{{ role.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Agregar">
+    </form>
+</div>
+{% endif %}
+
+<h2>Listado de usuarios</h2>
+{% if (users | length) > 0 %}
+<table>
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Rol</th>
+            {% if "user_institution_destroy" in permissions %}
+            <th>Acciones</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        {% set index = loop.index0 %} <!--this is the index of the iteration in "users"-->
+        {% if user.active %}
+        <tr>
+            <td>{{ user.email }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.lastname }}</td>
+            {% if "user_institution_update" in permissions %}
+                <td>
+                    <form action="/users_of_institution/update_role" method="POST">
+                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                        <input type="hidden" name="institution_id" value="{{ institution.id }}">
+                        <input type="hidden" name="old_role_id" value="{{ roles[index].id }}">
+                        <select name="new_role_id" id="selected_role_{{ user.id }}" onchange="this.form.submit()">
+                            <option selected value="{{ roles[index].id }}">
+                                {{ roles[index].name }}
+                            </option>
+                            {% for role in institution_roles %}
+                                {% if role.id != roles[index].id %}
+                                    <option value="{{ role.id }}">
+                                        {{ role.name }}
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </form>
+                </td>
+            {% else %}
+                <td>{{ roles[index].name }}</td>
+            {% endif %}
+
+            {% if "user_institution_destroy" in permissions %}
+            <td>
+                <form action="/users_of_institution/delete_role" method="POST">
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    <button type="submit">Quitar rol</button>
+                </form>
+            </td>
+            {% endif %}
+
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p>Aún no hay usuarios en esta institución</p>
+{% endif %}
+<div>
+    {% if pagination.has_prev %}
+        <a href="{{ url_for('users_of_institution.index', page=pagination.prev_num) }}">« Anterior</a>
+    {% endif %}
+    Página {{ pagination.page }} de {{ pagination.pages }}.
+    Mostrando {{ pagination.start }} - {{ pagination.end }} de {{ pagination.total }} resultados.
+    {% if pagination.has_next %}
+        <a href="{{ url_for('users_of_institution.index', page=pagination.next_num) }}">Siguiente »</a>
+    {% endif %}
+</div>
+{% endblock %}

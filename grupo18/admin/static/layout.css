@@ -1,0 +1,75 @@
+#navbar {
+    display: flex;
+    width: 96%;
+    margin-left: 0;
+    background-color: rgb(238, 190, 102);
+    color: rgb(134, 74, 190);
+    padding-left: 2%;
+    padding-right: 2%;
+    align-items: center;
+    padding-bottom: 1%;
+    padding-top: 1%;
+    max-height: 5%;
+}
+
+.body{
+    background-color: rgba(255, 255, 255, 0.836);
+}
+
+
+.navbar-left {
+    flex: 1; /* La primera columna se expande para ocupar espacio disponible */
+}
+
+.navbar-right {
+    flex: 2; /* La segunda columna se expande para ocupar el doble de espacio que la primera */
+}
+
+.logo {
+    max-width: 100%; /* Limita el ancho de la imagen al 100% del contenedor */
+    height: auto; /* Mantiene la proporción de aspecto original */
+}
+
+.right-elements {
+    display: flex;
+    justify-content: space-around; /* Separa los elementos */
+    align-items: center;
+    width: 45%; /* Ocupa el 60% del ancho del contenedor */
+    margin-left: 40%;
+}
+
+.right-elements > * {
+    margin-right: 3%;
+}
+
+#account_actions a {
+    display: block;
+    margin-bottom: 1%;
+}
+
+/*elements that will be hidden*/
+#toggle{
+    display: none;
+}
+
+.footer {
+    position: fixed;
+    display: flex; /* Cambiamos de grid a flex para facilitar el espaciado */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    justify-content: space-evenly; /* Alineamos los elementos al extremo izquierdo y derecho del footer */
+    background-color: rgb(238, 190, 102);
+    color: rgb(134, 74, 190);
+    text-align: center;
+    padding: 10px; /* Agregamos un espaciado alrededor del contenido del footer */
+}
+
+.footer p {
+    margin: 0; /* Quitamos el margen predeterminado de los párrafos */
+}
+
+
+/*These are the default CSS styles for all elements of the application.
+That is the reason why I chose to write the CSS using the tags and not the classes*/

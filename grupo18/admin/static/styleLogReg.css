@@ -1,0 +1,87 @@
+/* Estilo para el encabezado de la página */
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    color: #007bff; /* Cambiar el color del título */
+}
+
+/* Estilo para los formularios */
+form {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Agregar sombra al formulario */
+}
+
+/* Estilo para las etiquetas de formulario */
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: #555; /* Cambiar el color de las etiquetas */
+}
+
+/* Estilo para los campos de formulario */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #f5f5f5; /* Cambiar el color de fondo de los campos */
+}
+
+/* Estilo para el botón de enviar */
+button[type="submit"] {
+    background-color: #66c2ff; /* Cambiar el color de fondo del botón */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    display: block;
+}
+
+/* Estilo para la lista de mensajes flash (si lo tienes) */
+ul.flash-messages {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul.flash-messages li {
+    color: #ff0000; /* Color rojo para mensajes de error */
+    font-weight: bold; /* Hacer que los mensajes de error sean más destacados */
+}
+
+/* Estilos para los enlaces register_option */
+.register_option {
+    display: inline-block;
+    margin-right: 0 10px;
+    padding: 6px 10px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #4285F4; /* Color típico de Google */
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+    font-weight: normal; /* Añadido para quitar la negrita */
+}
+
+/* Cambio de color de fondo al pasar el ratón por encima */
+.register_option:hover {
+    background-color: #3b78e7; /* Color alternativo */
+}
+
+.google_logo {
+    display: block; /* Hacer que el enlace sea un bloque */
+    margin-top: 1%; /* Espacio del 1% en la parte superior del enlace */
+}
+
+.google_img {
+    border: 1px solid #007bff; /* 10px de ancho, sólido y color azul */
+    border-radius: 5px; /* Redondear las esquinas */
+}

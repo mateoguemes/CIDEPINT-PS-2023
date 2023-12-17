@@ -1,0 +1,65 @@
+/* Estilos globales */
+body {
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+}
+
+/* Estilos para los encabezados h2 */
+h2 {
+    color: #007bff;
+}
+
+/* Estilos para la sección de Información del Cliente */
+h2:first-of-type {
+    border-top: 2px solid #007bff;
+    margin-top: 20px;
+    padding-top: 10px;
+}
+
+/* Estilos para la lista de Archivos Adjuntos */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+/* Estilos para el formulario de Cambio de Estado */
+#new-status, #observation {
+    margin-right: 10px;
+}
+
+#change-status-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+/* Estilos para la lista de Comentarios */
+ul:last-of-type {
+    border-top: 2px solid #007bff;
+    margin-top: 20px;
+    padding-top: 10px;
+}
+
+textarea {
+    width: 100%;
+    padding: 5px;
+}
+
+#add-comment-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}

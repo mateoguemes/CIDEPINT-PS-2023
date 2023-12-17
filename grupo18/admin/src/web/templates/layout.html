@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <title>{% block title %}CIDEPINT{% endblock %}</title>
+    {% endblock %}
+</head>
+<body style="position: relative; min-height: 100vh; padding-bottom: 70px;">
+
+    <nav class="navbar navbar-expand-lg navbar-light px-3 py-2 border-bottom">
+        <div class="container-fluid">
+            <a href="/" class="navbar-brand d-flex align-items-center link-dark text-decoration-none">
+                <img class="logo" src="{{ url_for('static', filename='pictures/Logo.jpg') }}" alt="Logo" width="80%" height="auto">
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse ms-auto" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ actual_institution }}
+                        </a>
+                        <ul class="dropdown-menu" id="institution-dropdown">
+                            {% if institutions_of_user() %}
+                                {% for institution in institutions_of_user() %}
+                                    <li>
+                                        <a class="dropdown-item institution-link" href="#" data-institution-id="{{ institution.id }}">
+                                            {{ institution.name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            {% else %}
+                                <li><p class="dropdown-item" disabled>No perteneces a ninguna institución</p></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{{ url_for('static', filename='pictures/account.png') }}" alt="mdo" width="30" height="30" class="rounded-circle">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" id="user-dropdown">
+                            <li>
+                                <a class="dropdown-item profile-link" href="{{ url_for('users.show_profile', user_id=session.get('user_id')) }}">
+                                    Ver mi perfil
+                                </a>
+                            </li>                            
+                            <li>
+                                <a class="dropdown-item logout-link" href="/logout">
+                                    Cerrar Sesión
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4 bg-white">
+        {% block body %}{% endblock %}
+    </div>
+
+    <footer class="text-center text-dark bg-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4">
+                    <p class="mb-0 text-dark">Sitio Oficial: <a href="https://cidepint.ing.unlp.edu.ar/">https://cidepint.ing.unlp.edu.ar/</a></p>
+                </div>
+                <div class="col-md-4 d-flex justify-content-center">
+                    <a href="/" class="d-flex align-items-center link-dark text-decoration-none">
+                        <img class="logo" src="{{ url_for('static', filename='pictures/logo.png') }}" alt="Logo" width="50" height="18">
+                    </a>
+                </div>
+                <div class="col-md-4 text-right">
+                    <p>Mail de contacto: <a href="mailto:servicios@cidepint.ing.unlp.edu.ar">servicios@cidepint.ing.unlp.edu.ar</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-0vEDK/voUcETqma47PxsJ/Ys71OlKFOqVkESIs9rx3W4wAO3c/Z0I4UzYb7spu7I" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Dropdown para cambiar de institución
+            $("#institution-dropdown .institution-link").on("click", function (event) {
+                event.preventDefault();
+                var institutionId = $(this).data("institution-id");
+                $.ajax({
+                    type: "POST",
+                    url: "/change_institution/" + institutionId,
+                    success: function (data) {
+                        location.reload();
+                    }
+                });
+            });
+    
+            // Dropdown para el logout
+            $("#user-dropdown .logout-link").on("click", function (event) {
+                event.preventDefault();
+                var href = $(this).attr("href");
+                $.ajax({
+                    type: "POST",
+                    url: href,
+                    success: function (data) {
+                        location.reload();
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
+
+
+
+

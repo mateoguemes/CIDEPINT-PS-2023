@@ -1,0 +1,114 @@
+{% extends "layout.html" %}
+
+{% block title %}Gestión de Solicitudes de Servicio{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Gestión de Solicitudes de Servicio</h1>
+
+        <!-- Filtros -->
+        <form method="GET" action="{{ url_for('solicitudes.index') }}" class="mb-3">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="filter-service-type" class="form-label">Tipo de Servicio:</label>
+                    <select name="serviceType" class="form-select">
+                        <option value="">Todos</option>
+                        {% for service_type in unique_service_types %}
+                            <option value="{{ service_type }}">{{ service_type }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="filter-service-type" class="form-label">Estado:</label>
+                    <select name="status" class="form-select">
+                        <option value="">Todos</option>
+                        {% for state in states %}
+                            <option value="{{ state.id }}">{{ state.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="filter-start-date" class="form-label">Rango de Fechas:</label>
+                    <input type="date" name="startDate" class="form-control">
+                    <span class="fw-bold">-</span>
+                    <input type="date" name="endDate" class="form-control">
+                </div>
+
+                <div class="col-md-3">
+                    <label for="filter-user" class="form-label">Usuario que realizó la Solicitud:</label>
+                    <select name="user" id="filter-user" class="form-select">
+                        <option value="">Todos</option>
+                        {% for user_email in unique_users %}
+                            <option value="{{ user_email }}">{{ user_email }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary mt-3 me-2">Filtrar</button>
+                    <button type="submit" name="clear_filters" class="btn btn-secondary mt-3">Limpiar Filtros</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Lista de Solicitudes de Servicio -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tipo de Servicio</th>
+                    <th>Fecha de Solicitud</th>
+                    <th>Estado</th>
+                    <th>Usuario que Realizó la Solicitud</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for solicitud in solicitudes %}
+                    <tr>
+                        <td>
+                            {% if solicitud.service.type.name == "ANALYSIS" %}
+                                Análisis
+                            {% elif solicitud.service.type.name == "CONSULTING" %}
+                                Consultoría
+                            {% elif solicitud.service.type.name == "DEVELOPMENT" %}
+                                Desarrollo
+                            {% else %}
+                                Desconocido
+                            {% endif %}
+                        </td>
+                        <td>{{ solicitud.inserted_at }}</td>
+                        <td>{{ solicitud.estado }}</td>
+                        <td>{{ solicitud.user_email }}</td>
+                        <td>
+                            <a href="{{ url_for('service_detail.show_request', request_id=solicitud.id) }}" class="btn btn-info">Ver Detalles</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+      <!-- Paginación -->
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li class="page-item {% if pagination.prev_num is none %}disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('solicitudes.index', page=pagination.prev_num) }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% for page_num in pagination.iter_pages() %}
+            <li class="page-item {% if page_num == pagination.page %}active{% endif %}">
+                <a class="page-link" href="{{ url_for('solicitudes.index', page=page_num, serviceType=request.args.get('serviceType'), status=request.args.get('status'), startDate=request.args.get('startDate'), endDate=request.args.get('endDate'), user=request.args.get('user')) }}">{{ page_num }}</a>
+            </li>
+        {% endfor %}
+        <li class="page-item {% if pagination.next_num is none %}disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('solicitudes.index', page=pagination.next_num, serviceType=request.args.get('serviceType'), status=request.args.get('status'), startDate=request.args.get('startDate'), endDate=request.args.get('endDate'), user=request.args.get('user')) }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>    
+
+
+    </div>
+{% endblock %}

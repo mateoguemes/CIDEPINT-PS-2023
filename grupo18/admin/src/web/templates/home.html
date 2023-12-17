@@ -1,0 +1,90 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <div class="container mt-5 mb-5 custom-background p-4">
+        <h1>¡Hola {{ user.name }}!</h1>
+        <p>
+            Bienvenid@ al sitio web para administración y gestión de usuarios, instituciones y servicios de CIDEPINT.
+        </p>
+
+        <div class="row">
+            {% if "user_index" in permissions %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Usuarios</h5>
+                            <p class="card-text">Muestra un listado con todos los usuarios</p>
+                            <a href="/users" class="btn btn-primary">Ver Usuarios</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if "institution_index" in permissions %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Instituciones</h5>
+                            <p class="card-text">Muestra un listado con todas las instituciones</p>
+                            <a href="/institutions" class="btn btn-primary">Ver Instituciones</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if "institution_show" in permissions %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Detalle de institución</h5>
+                            <p class="card-text">Muestra el detalle de la institución seleccionada</p>
+                            <a href="/institutions/show/{{ institution_id }}" class="btn btn-primary">Ver Detalle</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if "service_index" in permissions %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Servicios</h5>
+                            <p class="card-text">Muestra un listado con todos los servicios de la institución seleccionada</p>
+                            <a href="/services" class="btn btn-primary">Ver Servicios</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if "requirement_index" in permissions %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Solicitudes</h5>
+                            <p class="card-text">Muestra un listado con todas las solicitudes recibidas a la institución seleccionada</p>
+                            <a href="/service_management" class="btn btn-primary">Ver Solicitudes</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if "configuration_show" in permissions %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Configuración Avanzada</h5>
+                        <p class="card-text">Permite administrar la configuración del sistema, Cantidad de elementos por pagina, Info Contacto, Activar/Desactivar Mantenimiento</p>
+                        <a href="{{ url_for('config_module.view_config') }}" class="btn btn-primary">Ver Configuraciones</a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+<style>
+    .custom-background {
+        background-color: #f2f2f2; /* Cambia este valor al color que prefieras */
+        border-radius: 10px; /* Agrega un radio de borde para suavizar las esquinas */
+        }
+</style>
+{% endblock %}
+

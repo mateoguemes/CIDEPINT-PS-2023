@@ -1,0 +1,110 @@
+{% extends 'layout.html' %}
+{% block body %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='validations.js') }}"></script>
+<style>
+    #map {
+        height: 200px;
+        width: 50%;
+        margin-bottom: 10px;
+    }
+
+    #address-input {
+        width: 30%;
+        margin-bottom: 10px;
+    }
+</style>
+    <div class="container mt-5 mb-5 custom-background p-4">
+        <h1>{% block heading %}Editar una institución{% endblock %}</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flash-messages">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <form action="/institutions/updateInstitution/{{ institution.id }}" method="POST" onsubmit="return validateForm()">
+            
+            <div class="mb-3 mt-3">
+                <label for="name" class="form-label">Nombre:</label>
+                <input type="text" class="form-control" id="name" placeholder="Ingrese el nombre de la institución" name="name" value="{{ institution.name }}">
+            </div>
+            <div class="mb-3">
+                <label for="information" class="form-label">Información:</label>
+                <input type="text" class="form-control" id="information" placeholder="Ingrese una breve descripción de la institución" name="information" value="{{ institution.information }}">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="website" class="form-label">Sitio web:</label>
+                <input type="text" class="form-control" id="website" placeholder="Ingrese el enlace al sitio web de la institución" name="website" value="{{ institution.website }}">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="opening_hours" class="form-label">Horarios de apertura:</label>
+                <input type="text" class="form-control" id="opening_hours" placeholder="Ingrese los horarios de apertura de la institución" name="opening_hours" value="{{ institution.opening_hours }}">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="contact" class="form-label">Contacto:</label>
+                <input type="text" class="form-control" id="contact" placeholder="Ingrese los métodos de contacto de la institución" name="contact" value="{{ institution.contact }}">
+            </div>
+            <div class="mb-3">
+                <label for="keywords" class="form-label">Palabras claves:</label>
+                <input type="text" class="form-control" required id="keywords" placeholder="Ingrese las palabras claves de búsqueda" name="keywords" value="{{ keywords }}">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="location" class="form-label">Dirección:</label>
+                <input type="text" class="form-control" id="address-input" placeholder="Ingrese la dirección" oninput="searchAddress(this.value)" name="location"  value="{{ institution.address }}">
+                <div id="map" class="map"></div>
+                <input type="hidden" class="form-control" id="latitude" name="latitude">
+                <input type="hidden" class="form-control" id="longitude" name="longitude">
+                <input type="hidden" class="form-control" id="address" name="address">
+            </div>
+            <a href="/institutions" class="btn btn-primary">Volver</a>
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+        </form>
+    </div>
+    <script>
+        var map = L.map('map').setView([0, 0], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+    
+        var marker = L.marker([0, 0], { draggable: true }).addTo(map);
+        var addressInput = document.getElementById('address-input');
+    
+        marker.on('dragend', function (e) {
+            updateLocationFields(e.target.getLatLng());
+        });
+    
+        function searchAddress(address) {
+            var url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${address}`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        var result = data[0];
+                        var latlng = L.latLng(result.lat, result.lon);
+                        map.setView(latlng, 13);
+                        marker.setLatLng(latlng);
+                        updateLocationFields(latlng);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    
+        function updateLocationFields(latlng) {
+            document.getElementById('latitude').value = latlng.lat;
+            document.getElementById('longitude').value = latlng.lng;
+    
+            var url = `https://nominatim.openstreetmap.org/reverse?lat=${latlng.lat}&lon=${latlng.lng}&format=json`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('address').value = data.display_name;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+{% endblock %}

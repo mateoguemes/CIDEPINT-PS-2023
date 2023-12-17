@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}     
+
+{% block body %}
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class="flash-messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+<h1>{% block heading %}Añadir una nota{% endblock %}</h1>
+<form action="/addNotes/{{ requirement_id }}" method="POST">
+    <div class="form-group">
+        <label for="text">Texto:</label>
+        <textarea class="form-control" name="text" id="text" required maxlength="255" placeholder="Ingrese lo que quiera comunicarle al cliente"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Continuar</button>
+</form>
+
+<!-- Botón para volver a la página de notas -->
+<a href="/showNotes/{{ requirement_id }}" class="btn btn-secondary mt-2">Volver a Notas</a>
+{% endblock %}

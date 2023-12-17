@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='validations.js') }}"></script>
+    <title>{% block title %}Registro{% endblock %}</title>
+    {% endblock %}
+</head>
+<body>
+    <div class="container">
+        {% block body %}
+            {% set title = "Registro con Google" if google else "Registro" %}
+            <h1 class="mt-5">{{ title }}</h1>
+            <form method="POST" action="{{ url_for('register.register',google=google,portal=portal) }}" onsubmit="return validateRegisterForm()">
+                {% block content %}
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nombre:</label>
+                        <input type="text" id="name" name="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">Apellido:</label>
+                        <input type="text" id="last_name" name="last_name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo Electrónico:</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                {% endblock %}
+                <button type="submit" class="btn btn-primary">Registrar</button>
+                <div class="mt-3"><h4 class="iniciar">¿Ya Tienes Cuenta? <a class="sesion" href="login">Iniciar Sesión</a></h4></div>
+            </form>
+        {% endblock %}
+    </div>
+    <script src="{{ url_for('static', filename='bootstrap/bootstrap.min.js') }}"></script>
+</body>
+</html>
+

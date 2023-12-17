@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='layout.css') }}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+     integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+{% endblock %}
+     
+
+{% block body %}
+{% if notes %}
+    <h1>{% block heading %}Notas{% endblock %}</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Emisor</th>
+                <th scope="col">Texto</th>
+                <th scope="col">Fecha de creación</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for note in notes %}
+                <tr>
+                    {% if note.from_laboratory %}
+                        <td>Laboratorio</td>
+                    {% else %}
+                        <td>Cliente</td>
+                    {% endif %}
+                    <td>{{ note.text }}</td>
+                    <td>{{ note.inserted_at }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('service_detail.show_request', request_id=requirement_id) }}" class="btn btn-primary">Volver al Detalle</a>
+    <h5>Para agregar otra nota haz click <a href="{{ url_for('service_detail.show_note_form', request_id=requirement_id) }}">aquí</a></h5>
+{% else %}
+    <h1>No hay notas para esta solicitud. Si desea dejar una haz click <a href="{{ url_for('service_detail.show_note_form', request_id=requirement_id) }}">aquí</a></h1>
+{% endif %}
+{% endblock %}
+

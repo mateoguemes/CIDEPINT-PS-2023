@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='bootstrap/bootstrap.min.css')}}">
+    <script src="{{url_for('static', filename='bootstrap/bootstrap.min.js')}}"></script>
+    <title>{% block title %}Iniciar Sesión{% endblock %}</title>
+    {% endblock %}
+</head>
+<body>
+    <div class="container">
+        {% block body %}
+            <h1 class="mt-5">{% block heading %}Iniciar Sesión{% endblock %}</h1>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class="flash-messages">
+                        {% for message in messages %}
+                            <li class="alert alert-info">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            <form method="POST" action="/login" onsubmit="return validateLoginForm()">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Correo Electrónico:</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña:</label>
+                    <input type="password" id="password" name="password" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                    <a class="google_logo" href="{{ url_for('login.login_google') }}" alt="Logo">
+                        <img class="google_img" src="{{ url_for('static', filename='pictures/google_login_button.png') }}" alt="Google Logo">
+                    </a> 
+                </div>
+                <h4>¿Aún No Tienes Una Cuenta?</h4>
+                <div class="mb-3">
+                    <a class="btn btn-secondary" target="_blank" href="{{url_for('register.register', google=false)}}">Registrarse</a>
+                    <a class="btn btn-secondary" target="_blank" href="{{url_for('register.register', google=true)}}">Registrarse con Google</a>
+                </div>
+                <div>
+                    <a class="btn btn-link" target="_blank" href="https://grupo18.proyecto2023.linti.unlp.edu.ar">¿Vienes de la aplicación de CIDEPINT?</a>
+                </div>
+            </form>
+        {% endblock %}
+    </div>
+</body>
+</html>
+
