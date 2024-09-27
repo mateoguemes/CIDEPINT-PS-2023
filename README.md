@@ -1,6 +1,6 @@
 # CIDEPINT-PS-2023
-### El trabajo que hice para la materia Proyecto de Software de la UNLP
-Fue un trabajo en grupo. Tuvimos que desarrollar una app privada de administración utilizando flask y sqlalchemy.
-Por otro lado, hicimos una app publica utilizando vue (emojis de vomito) que se comunicaba con la app flask 
-a través de APIs.
-#### No me hago cargo de lo feo que puede llegar a estar ni lo mal que anda
+### El trabajo para la materia Proyecto de Software de la UNLP - Año 2023
+Fue un trabajo en grupo en el que desarrollar un sistema de gestión de usuarios para CIDEPINT. 
+Se desarrollo una app privada de administración utilizando flask y, por otro lado,
+una app publica para que cualquier persona autenticada pueda solicitar pedidos. 
+Esta última utiliza vue, que se comunicaba con la app flask  a través de APIs.
